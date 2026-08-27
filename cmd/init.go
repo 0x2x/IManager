@@ -43,6 +43,7 @@ to quickly create a Cobra application.`,
 
 		*/
 		utils.InitalizeDatabase()
+		utils.InitalizeConfig()
 	},
 }
 

@@ -1,9 +1,5 @@
 /*
 Copyright © 2026 NAME HERE <EMAIL ADDRESS>
-<<<<<<< HEAD
-=======
-
->>>>>>> fc45c5618724502e98663b4cc1102fbe9908aafc
 */
 package cmd
 
@@ -13,17 +9,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-<<<<<<< HEAD
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "IManager",
-=======
-
-
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "IManager-Src",
->>>>>>> fc45c5618724502e98663b4cc1102fbe9908aafc
 	Short: "A brief description of your application",
 	Long: `A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:
@@ -56,8 +44,3 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> fc45c5618724502e98663b4cc1102fbe9908aafc
