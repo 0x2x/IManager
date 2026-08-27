@@ -4,7 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"os"
+<<<<<<< HEAD
 	"path/filepath"
+=======
+>>>>>>> fc45c5618724502e98663b4cc1102fbe9908aafc
 	"runtime"
 
 	"github.com/google/uuid"
@@ -59,6 +62,7 @@ func InitalizeDatabase() {
 			defer db_file.Close()
 		}
 	case "darwin":
+<<<<<<< HEAD
 		cacheDIR, err := os.UserCacheDir()
 		path := filepath.Join(cacheDir, "IManager")
 		dbPath := filepath.Join(path, "imanager.db")
@@ -67,6 +71,9 @@ func InitalizeDatabase() {
 			fmt.Println("Issue occurred while creating folder: ", err)
 			return
 		}
+=======
+		path := "~/Library/Caches/IManager"
+>>>>>>> fc45c5618724502e98663b4cc1102fbe9908aafc
 		if dirExists(path) {
 			if fileExist(path + "/imanager.db") {
 				// passes
