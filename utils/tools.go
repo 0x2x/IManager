@@ -172,7 +172,7 @@ func Config() (ApplicationData, bool) {
 }
 func RunFirst() bool {
 	stepChecker := 0 // We want to equal 3 to make sure configPath and dbPath exists
-	// This will create nessecary files
+	// This will create necessary files
 
 	// First check config
 	cacheDIR, err := os.UserCacheDir()

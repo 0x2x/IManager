@@ -13,8 +13,8 @@ import (
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "First command that should be ran to create nesscary files.",
-	Long: `Run this command to create IManager folder inside of local tempoary directory
+	Short: "First command that should be ran to create necessary files.",
+	Long: `Run this command to create IManager folder inside of local temporary directory
 	
 	This will create needed config file & database file to proceed with operations`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -50,29 +50,29 @@ var initCmd = &cobra.Command{
 			// CREATE Database Tables
 			db, err := database.Open()
 			if err != nil {
-				utils.Error("Issued occured while working with the database: ", err)
+				utils.Error("Issued occurred while working with the database: ", err)
 			}
 			defer db.Close()
 
 			if err := database.CreateBuyersTable(db); err != nil {
-				utils.Error("Issued occured while working with the database: ", err)
+				utils.Error("Issued occurred while working with the database: ", err)
 			} else {
 				utils.Success("Created BuyersTable inside of database")
 			}
 			if err := database.CreateInventoryTable(db); err != nil {
-				utils.Error("Issued occured while working with the database: ", err)
+				utils.Error("Issued occurred while working with the database: ", err)
 			} else {
-				utils.Success("Created BuyersTable inside of database")
+				utils.Success("Created InventoryTable inside of database")
 			}
 			if err := database.CreateOrdersTable(db); err != nil {
-				utils.Error("Issued occured while working with the database: ", err)
+				utils.Error("Issued occurred while working with the database: ", err)
 			} else {
-				utils.Success("Created BuyersTable inside of database")
+				utils.Success("Created OrdersTable inside of database")
 			}
 			if err := database.CreateReceiptsTable(db); err != nil {
-				utils.Error("Issued occured while working with the database: ", err)
+				utils.Error("Issued occurred while working with the database: ", err)
 			} else {
-				utils.Success("Created BuyersTable inside of database")
+				utils.Success("Created ReceiptsTable inside of database")
 			}
 		}
 	},
