@@ -115,3 +115,16 @@ func InitalizeConfig() bool {
 	}
 	return true
 }
+
+func DatabasePath() (string, bool) {
+	cacheDIR, err := os.UserCacheDir()
+	path := filepath.Join(cacheDIR, "IManager")
+	dbPath := filepath.Join(path, "imanager.db")
+	result := fileExist(dbPath)
+
+	if err != nil {
+		fmt.Print("Issue occured while grabbing: " + err.Error())
+		return "", result
+	}
+	return dbPath, result // Assuming its found
+}
