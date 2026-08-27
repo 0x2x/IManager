@@ -128,3 +128,44 @@ func DatabasePath() (string, bool) {
 	}
 	return dbPath, result // Assuming its found
 }
+
+func RunFirst() bool {
+	stepChecker := 0 // We want to equal 3 to make sure configPath and dbPath exists
+	// This will create nessecary files
+
+	// First check config
+	cacheDIR, err := os.UserCacheDir()
+	path := filepath.Join(cacheDIR, "IManager")
+	configPath := filepath.Join(path, "IManager.json")
+	dbPath := filepath.Join(path, "IManager.db")
+
+	if fileExist(dbPath) {
+		stepChecker += 1
+	}
+	if fileExist(configPath) {
+		stepChecker += 1
+	}
+
+	if err != nil {
+		return false
+	}
+
+	data, rerr := os.ReadFile(configPath)
+	if rerr != nil {
+		return false
+	}
+	var config ApplicationData
+	rerr = json.Unmarshal(data, &config)
+	if rerr != nil {
+		return false
+	}
+
+	if config.Initialized == true {
+		stepChecker += 1 // Makes sure is True
+	}
+
+	if stepChecker != 3 {
+		return InitalizeConfig()
+	}
+	return true
+}

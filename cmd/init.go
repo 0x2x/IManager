@@ -9,15 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type ApplicationData struct {
-	initialized    bool   `json:"init"`
-	pending_path   string `json:"pending"`
-	inventory_path string `json:inventory`
-	orders_path    string `json:"pending"`
-	delivered_path string `json:inventory`
-	receipts_path  string `json:inventory`
-}
-
 type InventoryData struct {
 	item_id int32 `json:"item_id"`
 }
@@ -25,13 +16,10 @@ type InventoryData struct {
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "First command that should be ran to create nesscary files.",
+	Long: `Run this command to create IManager folder inside of local tempoary directory
+	
+	This will create needed config file & database file to proceed with operations`,
 	Run: func(cmd *cobra.Command, args []string) {
 		/*
 			Steps:
@@ -41,7 +29,6 @@ to quickly create a Cobra application.`,
 		*/
 		//utils.InitalizeDatabase() | f4b3e9a2-7d8c-4b51-9e63-2a81f5c6d7b4 - inbuilt into InitalizeConfig
 		utils.InitalizeConfig()
-
 	},
 }
 
