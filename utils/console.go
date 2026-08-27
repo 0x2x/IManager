@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"time"
 )
 
 const (
@@ -25,4 +26,12 @@ func Information(msg string) {
 
 func Error(a ...any) (n int, err error) {
 	return fmt.Println(Blue + "[!]\t" + Red + fmt.Sprint(a...) + Reset)
+}
+
+func Debug(a ...any) {
+	fmt.Printf(
+		Purple+"[DEBUG] "+White+"%s\t%v"+Reset+"\n",
+		time.Now().Format("2006-01-02 15:04:05"),
+		fmt.Sprint(a...),
+	)
 }

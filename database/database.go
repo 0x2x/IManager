@@ -8,11 +8,10 @@ import (
 )
 
 func Open() (*sql.DB, error) {
-	path, result := utils.DatabasePath()
-	// Fetch imanager.db from temp
-	if result == false {
-		utils.InitalizeDatabase()           // Should pass
-		path, result = utils.DatabasePath() // Update with path if need to.
+	path, exists := utils.DatabasePath()
+	if !exists {
+		utils.InitalizeDatabase()
+		path, exists = utils.DatabasePath()
 	}
 	db, err := sql.Open("sqlite", path)
 	if err != nil {

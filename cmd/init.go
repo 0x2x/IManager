@@ -4,14 +4,11 @@ Copyright © 2026 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"IManager-Src/database"
 	"IManager-Src/utils"
 
 	"github.com/spf13/cobra"
 )
-
-type InventoryData struct {
-	item_id int32 `json:"item_id"`
-}
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
@@ -29,7 +26,9 @@ var initCmd = &cobra.Command{
 		*/
 		//utils.InitalizeDatabase() | f4b3e9a2-7d8c-4b51-9e63-2a81f5c6d7b4 - inbuilt into InitalizeConfig
 		Config, Result := utils.Config()
+		utils.Debug("TESTING", Config, Result)
 		if Result { // File is found with data
+			utils.Debug("init.go - ", Config)
 			if Config.Initialized == true {
 				utils.Information("Config file already exists")
 			}
@@ -48,8 +47,34 @@ var initCmd = &cobra.Command{
 			utils.Information("Creating database file")
 			utils.Information("Creating config file")
 			utils.InitalizeConfig()
-		}
+			// CREATE Database Tables
+			db, err := database.Open()
+			if err != nil {
+				utils.Error("Issued occured while working with the database: ", err)
+			}
+			defer db.Close()
 
+			if err := database.CreateBuyersTable(db); err != nil {
+				utils.Error("Issued occured while working with the database: ", err)
+			} else {
+				utils.Success("Created BuyersTable inside of database")
+			}
+			if err := database.CreateInventoryTable(db); err != nil {
+				utils.Error("Issued occured while working with the database: ", err)
+			} else {
+				utils.Success("Created BuyersTable inside of database")
+			}
+			if err := database.CreateOrdersTable(db); err != nil {
+				utils.Error("Issued occured while working with the database: ", err)
+			} else {
+				utils.Success("Created BuyersTable inside of database")
+			}
+			if err := database.CreateReceiptsTable(db); err != nil {
+				utils.Error("Issued occured while working with the database: ", err)
+			} else {
+				utils.Success("Created BuyersTable inside of database")
+			}
+		}
 	},
 }
 

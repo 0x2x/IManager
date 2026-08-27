@@ -73,7 +73,14 @@ func TempFileCreation(fileName string, fileExt string) (string, bool) {
 		}
 		defer db_file.Close()
 	}
+	if FileExist(dbPath) {
+		return dbPath, true
+	} else {
+		TempFileCreation("IManager", "json")
+	}
+	Debug("BUG: https://github.com/0x2x/IManager/issues/1")
 	return "", false
+
 }
 
 func InitalizeDatabase() (string, bool) { // May need to make OS specific?
@@ -85,7 +92,8 @@ func InitalizeConfig() bool {
 	config_file, cresult := TempFileCreation("IManager", "json")
 	database_file, dresult := InitalizeDatabase()
 	if cresult != true || dresult != true { // Issue occurred while creating file
-		Error("Issue occurred while creating IManager.json or either database\n\tPlease create an github issue inside of github repo: github.com/0x2x/Imanager")
+		Error("Issue occurred while creating IManager.json or either database\n\tPlease create an github issue inside of github repo: github.com/0x2x/Imanager", cresult, dresult)
+		Debug("tools.go - issue:", cresult, dresult)
 		return false
 	}
 	//FUNC Write to IManager.json
@@ -134,6 +142,9 @@ func Config() (ApplicationData, bool) {
 	cacheDIR, err := os.UserCacheDir()
 	path := filepath.Join(cacheDIR, "IManager")
 	configPath := filepath.Join(path, "IManager.json")
+	Debug(cacheDIR)
+	Debug(path)
+	Debug(configPath)
 	if FileExist(configPath) == false {
 		InitalizeConfig()
 	}
