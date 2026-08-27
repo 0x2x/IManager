@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -35,7 +34,7 @@ func dirExists(path string) bool {
 	return false
 }
 
-func fileExist(path string) bool { // I know its just running dirExists().
+func FileExist(path string) bool { // I know its just running dirExists().
 	return dirExists(path)
 }
 
@@ -45,16 +44,16 @@ func TempFileCreation(fileName string, fileExt string) (string, bool) {
 	path := filepath.Join(cacheDIR, "IManager")
 	dbPath := filepath.Join(path, combo)
 	if err != nil {
-		fmt.Println("Issue occurred while creating folder: ", err)
+		Error("Issue occurred while creating folder: ", err)
 		return dbPath, false
 	}
 	if dirExists(path) {
-		if fileExist(dbPath) {
+		if FileExist(dbPath) {
 			return dbPath, true // Database .db exists in folder
 		} else {
 			db_file, db_err := os.Create(dbPath) // creates database file
 			if db_err != nil {
-				fmt.Println("Error creating file: ", db_err)
+				Error("Error creating file: ", db_err)
 				return "", false
 			}
 			defer db_file.Close()
@@ -63,13 +62,13 @@ func TempFileCreation(fileName string, fileExt string) (string, bool) {
 	} else {
 		folder_err := os.Mkdir(path, 0755)
 		if folder_err != nil { // Issue creating folder
-			fmt.Println("Issue occurred while creating folder: ", folder_err)
+			Error("Issue occurred while creating folder: ", folder_err)
 			return "", false
 		}
 		// Folder has been created
 		db_file, db_err := os.Create(dbPath) // creates database file
 		if db_err != nil {
-			fmt.Println("Error creating file: ", db_err)
+			Error("Issue occurred while creating file: ", db_err)
 			return dbPath, true
 		}
 		defer db_file.Close()
@@ -85,7 +84,8 @@ func InitalizeDatabase() (string, bool) { // May need to make OS specific?
 func InitalizeConfig() bool {
 	config_file, cresult := TempFileCreation("IManager", "json")
 	database_file, dresult := InitalizeDatabase()
-	if cresult != true || dresult != true { // Issue occured while creating file
+	if cresult != true || dresult != true { // Issue occurred while creating file
+		Error("Issue occurred while creating IManager.json or either database\n\tPlease create an github issue inside of github repo: github.com/0x2x/Imanager")
 		return false
 	}
 	//FUNC Write to IManager.json
@@ -98,9 +98,10 @@ func InitalizeConfig() bool {
 		DeliveredPath: database_file,
 		ReceiptsPath:  database_file,
 	}
-	fmt.Print(data)
+
 	file, err := os.Create(config_file)
 	if err != nil { // Issue occurs
+		Error("Issue occurred while creating config file: " + err.Error())
 		return false
 	}
 
@@ -111,6 +112,7 @@ func InitalizeConfig() bool {
 
 	err = encoder.Encode(data)
 	if err != nil { // Issue occurs
+		Error("Issue occurred while encoding config file: " + err.Error())
 		return false
 	}
 	return true
@@ -120,15 +122,43 @@ func DatabasePath() (string, bool) {
 	cacheDIR, err := os.UserCacheDir()
 	path := filepath.Join(cacheDIR, "IManager")
 	dbPath := filepath.Join(path, "imanager.db")
-	result := fileExist(dbPath)
+	result := FileExist(dbPath)
 
 	if err != nil {
-		fmt.Print("Issue occured while grabbing: " + err.Error())
+		Error("Issue occurred while grabbing: " + err.Error())
 		return "", result
 	}
 	return dbPath, result // Assuming its found
 }
+func Config() (ApplicationData, bool) {
+	cacheDIR, err := os.UserCacheDir()
+	path := filepath.Join(cacheDIR, "IManager")
+	configPath := filepath.Join(path, "IManager.json")
+	if FileExist(configPath) == false {
+		InitalizeConfig()
+	}
 
+	if err != nil {
+		return ApplicationData{}, false
+	}
+
+	data, rerr := os.ReadFile(configPath)
+	if rerr != nil {
+		if InitalizeConfig() == false {
+			return ApplicationData{}, false
+		}
+	}
+	var config ApplicationData
+	rerr = json.Unmarshal(data, &config)
+	if rerr != nil {
+		return ApplicationData{}, false
+	}
+
+	if config.Initialized == true {
+		return config, true
+	}
+	return config, true
+}
 func RunFirst() bool {
 	stepChecker := 0 // We want to equal 3 to make sure configPath and dbPath exists
 	// This will create nessecary files
@@ -139,10 +169,10 @@ func RunFirst() bool {
 	configPath := filepath.Join(path, "IManager.json")
 	dbPath := filepath.Join(path, "IManager.db")
 
-	if fileExist(dbPath) {
+	if FileExist(dbPath) {
 		stepChecker += 1
 	}
-	if fileExist(configPath) {
+	if FileExist(configPath) {
 		stepChecker += 1
 	}
 
@@ -152,7 +182,9 @@ func RunFirst() bool {
 
 	data, rerr := os.ReadFile(configPath)
 	if rerr != nil {
-		return false
+		if InitalizeConfig() == false {
+			return false
+		}
 	}
 	var config ApplicationData
 	rerr = json.Unmarshal(data, &config)

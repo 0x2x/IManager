@@ -28,7 +28,28 @@ var initCmd = &cobra.Command{
 
 		*/
 		//utils.InitalizeDatabase() | f4b3e9a2-7d8c-4b51-9e63-2a81f5c6d7b4 - inbuilt into InitalizeConfig
-		utils.InitalizeConfig()
+		Config, Result := utils.Config()
+		if Result { // File is found with data
+			if Config.Initialized == true {
+				utils.Information("Config file already exists")
+			}
+			if Config.DeliveredPath != "" { // Path is not empty
+				utils.Information("Data inside config has been located.")
+			}
+			if utils.FileExist(Config.DeliveredPath) {
+				utils.Information("Database has been located")
+			} else {
+				utils.InitalizeConfig()
+			}
+		} else {
+			utils.Information("Detecting Operating System")
+			utils.Information("Locating Cache Folder for OS")
+			utils.Information("Cache Folder has been located")
+			utils.Information("Creating database file")
+			utils.Information("Creating config file")
+			utils.InitalizeConfig()
+		}
+
 	},
 }
 

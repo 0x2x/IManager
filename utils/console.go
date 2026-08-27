@@ -1,5 +1,9 @@
 package utils
 
+import (
+	"fmt"
+)
+
 const (
 	Reset  = "\033[0m"
 	Red    = "\033[31m"
@@ -10,3 +14,15 @@ const (
 	Cyan   = "\033[36m"
 	White  = "\033[37m"
 )
+
+func Success(msg string) {
+	fmt.Println(Blue + "[✔️]\t" + Green + msg + Reset)
+}
+
+func Information(msg string) {
+	fmt.Println(Blue + "[*]\t" + Green + msg + Reset)
+}
+
+func Error(a ...any) (n int, err error) {
+	return fmt.Println(Blue + "[!]\t" + Red + fmt.Sprint(a...) + Reset)
+}
