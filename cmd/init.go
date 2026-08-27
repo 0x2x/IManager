@@ -4,9 +4,8 @@ Copyright © 2026 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
-
 	"IManager-Src/utils"
+	"fmt"
 
 	"github.com/spf13/cobra"
 )
@@ -35,15 +34,18 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("init called")
+		rGID := utils.GenerateID()
+
+		fmt.Println("init called\tBase: " + rGID)
 		/*
 			Steps:
 				1. InitalizeDatabase - creates cache folder, create IManager.db
 				2. InitalizeConfig - creates config.json
 
 		*/
-		utils.InitalizeDatabase()
+		//utils.InitalizeDatabase() | f4b3e9a2-7d8c-4b51-9e63-2a81f5c6d7b4 - inbuilt into InitalizeConfig
 		utils.InitalizeConfig()
+
 	},
 }
 
