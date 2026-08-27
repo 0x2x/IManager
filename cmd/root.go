@@ -4,6 +4,8 @@ Copyright © 2026 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"IManager-Src/utils"
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -27,6 +29,9 @@ to quickly create a Cobra application.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	rGID := utils.GenerateID()
+	fmt.Println(utils.Blue + "Build: " + utils.Green + rGID + utils.Reset) // This is more of a safety measure for late programming, I can recheck builds to make sure the program is fully being latest when testing.
+
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
