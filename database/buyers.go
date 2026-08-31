@@ -12,6 +12,7 @@ type Buyer struct {
 	LastName    string
 	PhoneNumber string
 	Telegram    string
+	ItemID      int64
 }
 
 func CreateBuyersTable(db *sql.DB) error {
@@ -21,7 +22,9 @@ func CreateBuyersTable(db *sql.DB) error {
 			first_name TEXT NOT NULL DEFAULT '',
 			last_name TEXT NOT NULL DEFAULT '',
 			phone_number TEXT NOT NULL DEFAULT '',
-			telegram TET NOT NULL DEFAULT ''
+			telegram TEXT NOT NULL DEFAULT ''
+			item_id INTEGER,
+			FOREIGN KEY (item_id) REFERENCES inventory(inventory_id) 
 		);`
 	_, err := db.Exec(query)
 	if err != nil {

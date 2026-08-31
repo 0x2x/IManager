@@ -35,3 +35,11 @@ func Debug(a ...any) {
 		fmt.Sprint(a...),
 	)
 }
+
+func PublicErrors(a ...any) { // This function will appear when something goes wrong (permissions, code?, something, e.g)
+	fmt.Printf(
+		Red+"[DEBUG] "+White+"%s\t%v"+Reset+"\n",
+		time.Now().Format("2006-01-02 15:04:05"),
+		fmt.Sprint(a...),
+	)
+}

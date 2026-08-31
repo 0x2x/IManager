@@ -7,21 +7,25 @@ import (
 )
 
 type InventoryData struct {
-	BuyerID     int64
-	FirstName   string
-	LastName    string
-	PhoneNumber string
-	Telegram    string
+	inventory_id    int64
+	ProductName     string
+	ProductURL      string
+	ProductPrice    float64
+	ProductShipping float64
+	ProductTax      float64
+	quantity        int
 }
 
 func CreateInventoryTable(db *sql.DB) error {
 	const query = `
 		CREATE TABLE IF NOT EXISTS inventory (
-			buyer_id INTEGER PRIMARY KEY AUTOINCREMENT,
-			first_name TEXT NOT NULL DEFAULT '',
-			last_name TEXT NOT NULL DEFAULT '',
-			phone_number TEXT NOT NULL DEFAULT '',
-			telegram TET NOT NULL DEFAULT ''
+			inventory_id INTEGER PRIMARY KEY AUTOINCREMENT,
+			product_name TEXT NOT NULL DEFAULT ''
+			product_url TEXT NOT NULL DEFAULT ''
+			product_price FLOAT  NOT NULL DEFAULT 0.00
+			product_shipping FLOAT NOT NULL DEFAULT 0.00
+			product_tax FLOAT NOT NULL DEFAULT 0.00
+			product_quantity INTEGER NOT NULL DEFAULT 0
 		);`
 	_, err := db.Exec(query)
 	if err != nil {
@@ -30,25 +34,26 @@ func CreateInventoryTable(db *sql.DB) error {
 	return nil
 }
 
-func AddItem(db *sql.DB, buyer Buyer) (string, error) {
+func AddItem(db *sql.DB, item InventoryData) error {
 	const query = `
-		INSERT INTO buyers (buyer_id, first_name, last_name, phone_number, telegram)
-		VALUES (?, ?, ?, ?, ?)
+		INSERT INTO inventory (product_name, product_url, product_price, product_shipping, product_tax, product_quantity)
+		VALUES (?, ?, ?, ?, ?, ?)
 	`
-
-	gid := utils.GenerateID()
-
 	_, err := db.Exec(
 		query,
-		gid,
-		buyer.FirstName,
-		buyer.LastName,
-		buyer.PhoneNumber,
-		buyer.Telegram,
+		item.ProductName,
+		item.ProductURL,
+		item.ProductPrice,
+		item.ProductShipping,
+		item.ProductShipping,
+		item.ProductTax,
+		item.quantity,
 	)
 	if err != nil {
-		return gid, fmt.Errorf("inserting buyer into buyers table: %w", err)
+		utils.PublicErrors("Issue occured while inserting into buyers table: %w\n\thttps://github.com/0x2x/IManager", err)
+		return fmt.Errorf("inserting buyer into buyers table: %w", err)
 	}
-
-	return gid, nil
+	return nil
 }
+
+func FindItem(db *sql.DB)
