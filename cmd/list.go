@@ -1,5 +1,6 @@
 /*
 Copyright © 2026 NAME HERE <EMAIL ADDRESS>
+
 */
 package cmd
 
@@ -25,7 +26,7 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	inventoryCmd.AddCommand(listCmd)
+	order.AddCommand(listCmd)
 
 	// Here you will define your flags and configuration settings.
 
